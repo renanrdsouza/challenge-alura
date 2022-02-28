@@ -17,13 +17,34 @@ public class ReceitaController {
     private ReceitaService receitaService;
 
     @GetMapping
-    public List<ReceitaDTO> list() {
-        return receitaService.listAll();
+    public ResponseEntity<List<ReceitaDTO>> list() {
+        return ResponseEntity.ok().body(receitaService.listAll());
     }
 
     @PostMapping
-    public ResponseEntity<Receita> create(@RequestBody Receita receita) {
-        receitaService.create(receita);
+    public ResponseEntity<Receita> save(@RequestBody Receita receita) {
+        receitaService.save(receita);
+
+        return ResponseEntity.ok().body(receita);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id){
+        receitaService.delete(id);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Receita> update(@PathVariable Long id, @RequestBody Receita receita) {
+        receitaService.update(id, receita);
+
+        return ResponseEntity.ok().body(receita);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ReceitaDTO> detail(@PathVariable Long id) {
+        ReceitaDTO receita = receitaService.detail(id);
 
         return ResponseEntity.ok().body(receita);
     }
